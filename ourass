@@ -1,1 +1,1 @@
-getgenv().haspay = true
+getgenv().haspay = false
