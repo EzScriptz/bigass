@@ -146,7 +146,6 @@ function boxBase:Remove()
     ESP.Objects[self.Object] = nil
     for i,v in pairs(self.Components) do
         v.Visible = false
-        v:Remove()
         self.Components[i] = nil
     end
 end
