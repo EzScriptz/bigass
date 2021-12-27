@@ -89,7 +89,7 @@ function ESP:Toggle(bool)
             end
             if v.Type == "Box" then --fov circle etc
                 if v.Temporary then
-                    v:Remove()
+                    v:Removeit()
                 else
                     for i,v in pairs(v.Components) do
                         v.Visible = false
@@ -142,7 +142,7 @@ end
 local boxBase = {}
 boxBase.__index = boxBase
 
-function boxBase:Remove()
+function boxBase:Removeit()
     ESP.Objects[self.Object] = nil
     for i,v in pairs(self.Components) do
         v.Visible = false
@@ -153,7 +153,7 @@ end
 function boxBase:Update()
     if not self.PrimaryPart then
         --warn("not supposed to print", self.Object)
-        return self:Remove()
+        return self:Removeit()
     end
 
     local color
@@ -313,7 +313,7 @@ function ESP:Add(obj, options, thebool)
     }, boxBase)
 
     if self:GetBox(obj) then
-        self:GetBox(obj):Remove()
+        self:GetBox(obj):Removeit()
     end
 
     box.Components["Quad"] = Draw("Quad", {
@@ -349,12 +349,12 @@ function ESP:Add(obj, options, thebool)
     
     obj.AncestryChanged:Connect(function(_, parent)
         if parent == nil and ESP.AutoRemove ~= false then
-            box:Remove()
+            box:Removeit()
         end
     end)
     obj:GetPropertyChangedSignal("Parent"):Connect(function()
         if obj.Parent == nil and ESP.AutoRemove ~= false then
-            box:Remove()
+            box:Removeit()
         end
     end)
 
@@ -362,7 +362,7 @@ function ESP:Add(obj, options, thebool)
 	if hum then
         hum.Died:Connect(function()
             if ESP.AutoRemove ~= false then
-                box:Remove()
+                box:Removeit()
             end
 	end)
     end
