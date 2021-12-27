@@ -410,6 +410,7 @@ for i,v in pairs(plrs:GetPlayers()) do
     end
 end
 
+spawn(function()
 while wait() do
     cam = workspace.CurrentCamera
     for i,v in (ESP.Enabled and pairs or ipairs)(ESP.Objects) do
@@ -419,6 +420,6 @@ while wait() do
         end
     end
 end
-
+end)
 
 return ESP
