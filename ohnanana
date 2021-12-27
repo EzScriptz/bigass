@@ -89,7 +89,7 @@ function ESP:Toggle(bool)
             end
             if v.Type == "Box" then --fov circle etc
                 if v.Temporary then
-                    v:Removeit()
+                    v:Remove()
                 else
                     for i,v in pairs(v.Components) do
                         v.Visible = false
@@ -142,10 +142,11 @@ end
 local boxBase = {}
 boxBase.__index = boxBase
 
-function boxBase:Removeit()
+function boxBase:Remove()
     ESP.Objects[self.Object] = nil
     for i,v in pairs(self.Components) do
         v.Visible = false
+        v:Remove()
         self.Components[i] = nil
     end
 end
@@ -153,7 +154,7 @@ end
 function boxBase:Update()
     if not self.PrimaryPart then
         --warn("not supposed to print", self.Object)
-        return self:Removeit()
+        return self:Remove()
     end
 
     local color
@@ -292,7 +293,7 @@ function boxBase:Update()
     end
 end
 
-function ESP:Add(obj, options, thebool)
+function ESP:Add(obj, options)
     if not obj.Parent and not options.RenderInNil then
         return warn(obj, "has no parent")
     end
@@ -313,7 +314,7 @@ function ESP:Add(obj, options, thebool)
     }, boxBase)
 
     if self:GetBox(obj) then
-        self:GetBox(obj):Removeit()
+        self:GetBox(obj):Remove()
     end
 
     box.Components["Quad"] = Draw("Quad", {
@@ -349,12 +350,12 @@ function ESP:Add(obj, options, thebool)
     
     obj.AncestryChanged:Connect(function(_, parent)
         if parent == nil and ESP.AutoRemove ~= false then
-            box:Removeit()
+            box:Remove()
         end
     end)
     obj:GetPropertyChangedSignal("Parent"):Connect(function()
         if obj.Parent == nil and ESP.AutoRemove ~= false then
-            box:Removeit()
+            box:Remove()
         end
     end)
 
@@ -362,7 +363,7 @@ function ESP:Add(obj, options, thebool)
 	if hum then
         hum.Died:Connect(function()
             if ESP.AutoRemove ~= false then
-                box:Removeit()
+                box:Remove()
             end
 	end)
     end
