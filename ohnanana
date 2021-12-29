@@ -152,7 +152,7 @@ function boxBase:Remove()
 end
 
 function boxBase:Update()
-    if not self.PrimaryPart then
+    if not self.PrimaryPart or self.Position then
         --warn("not supposed to print", self.Object)
         return self:Remove()
     end
@@ -177,7 +177,7 @@ function boxBase:Update()
     if self.IsEnabled and (type(self.IsEnabled) == "string" and not ESP[self.IsEnabled] or type(self.IsEnabled) == "function" and not self:IsEnabled()) then
         allow = false
     end
-    if not workspace:IsAncestorOf(self.PrimaryPart) and not self.RenderInNil then
+    if not workspace:IsAncestorOf(self.PrimaryPart or self) and not self.RenderInNil then
         allow = false
     end
 
@@ -193,7 +193,7 @@ function boxBase:Update()
     end
 
     --calculations--
-    local cf = self.PrimaryPart.CFrame
+    local cf = self.PrimaryPart.CFrame or self.CFrame
     if ESP.FaceCamera then
         cf = CFrame.new(cf.p, cam.CFrame.p)
     end
@@ -243,7 +243,7 @@ function boxBase:Update()
             self.Components.Distance.Font = ESP.Font
             self.Components.Distance.Position = Vector2.new(TagPos.X, TagPos.Y + 14)
             if ESP.Health then
-                if self.PrimaryPart.Parent:FindFirstChildOfClass("Humanoid") then 
+                if self.PrimaryPart.Parent:FindFirstChildOfClass("Humanoid") or self.Parent:FindFirstChildOfClass("Humanoid") then 
                     self.Components.Distance.Text = "[".. math.floor((cam.CFrame.p - cf.p).magnitude).. "m]".. "[".. tostring(((1/self.PrimaryPart.Parent:FindFirstChildOfClass("Humanoid").MaxHealth) * self.PrimaryPart.Parent:FindFirstChildOfClass("Humanoid").Health) * 100).. "%]"
                 elseif self.PrimaryPart.Parent:FindFirstChild("Health") then 
                     self.Components.Distance.Text = "[".. math.floor((cam.CFrame.p - cf.p).magnitude).. "m]".. "[".. tostring(math.round(self.PrimaryPart.Parent.Health.Value)).. "%]"
