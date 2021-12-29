@@ -198,6 +198,12 @@ function boxBase:Update()
 
     --calculations--
     local cf = self.CFrame or self.PrimaryPart.CFrame
+    if math.floor((cam.CFrame.p - cf.p).magnitude) > ESP.MaxDistance then
+    	for i,v in pairs(self.Components) do
+            v.Visible = false
+        end
+        return
+    end
     if ESP.FaceCamera then
         cf = CFrame.new(cf.p, cam.CFrame.p)
     end
