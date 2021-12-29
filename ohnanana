@@ -251,6 +251,8 @@ function boxBase:Update()
 				else
 				    self.Components.Distance.Text = "[".. math.floor((cam.CFrame.p - cf.p).magnitude).. "m]"
 			end
+		else
+			self.Components.Distance.Text = "[".. math.floor((cam.CFrame.p - cf.p).magnitude).. "m]"
 		end
             else
                 self.Components.Distance.Text = "[".. math.floor((cam.CFrame.p - cf.p).magnitude).. "m]"
