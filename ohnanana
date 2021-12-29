@@ -152,9 +152,11 @@ function boxBase:Remove()
 end
 
 function boxBase:Update()
-    if not self.PrimaryPart or self.Position then
+    if not self.PrimaryPart then
+    	if not self.Position then
         --warn("not supposed to print", self.Object)
         return self:Remove()
+	end
     end
 
     local color
@@ -177,7 +179,7 @@ function boxBase:Update()
     if self.IsEnabled and (type(self.IsEnabled) == "string" and not ESP[self.IsEnabled] or type(self.IsEnabled) == "function" and not self:IsEnabled()) then
         allow = false
     end
-    if not workspace:IsAncestorOf(self.PrimaryPart or self) and not self.RenderInNil then
+    if not workspace:IsAncestorOf(self.PrimaryPart) and not self.RenderInNil then
         allow = false
     end
 
@@ -307,7 +309,7 @@ function ESP:Add(obj, options)
         Size = options.Size or self.BoxSize,
         Object = obj,
         Player = options.Player or plrs:GetPlayerFromCharacter(obj),
-        PrimaryPart = options.PrimaryPart or obj.ClassName == "Model" and obj:FindFirstChild(ESP.PrimaryPart) or (obj.PrimaryPart or obj:FindFirstChild("HumanoidRootPart") or obj:FindFirstChildWhichIsA("BasePart")) or obj:IsA("BasePart") and obj,
+        PrimaryPart = options.PrimaryPart or obj.ClassName == "Model" and obj:FindFirstChild(ESP.PrimaryPart) or (obj.PrimaryPart or obj:FindFirstChild("HumanoidRootPart") or obj:FindFirstChildWhichIsA("BasePart")) or obj:IsA("BasePart") and obj or obj,
         Components = {},
         IsEnabled = options.IsEnabled,
         Temporary = options.Temporary,
@@ -421,5 +423,6 @@ game:GetService("RunService").RenderStepped:Connect(function()
         end
     end
 end)
+
 
 return ESP
