@@ -14,7 +14,7 @@ local ESP = {
     TeamMates = true,
     Players = true,
     Health = true,
-    PrimaryPart = "HumanoidRootPart",
+    PrimaryPart = "HumanoidRootPart" or obj,
     
     CharacterList = {},
     Objects = setmetatable({}, {__mode="kv"}),
