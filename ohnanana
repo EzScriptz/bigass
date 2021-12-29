@@ -12,9 +12,9 @@ local ESP = {
     Font = 3,
     AttachShift = 1,
     TeamMates = true,
-    Players = true,
+    Players = false,
     Health = true,
-    PrimaryPart = "HumanoidRootPart" or obj,
+    PrimaryPart = "HumanoidRootPart",
     
     CharacterList = {},
     Objects = setmetatable({}, {__mode="kv"}),
@@ -158,7 +158,6 @@ function boxBase:Update()
         return self:Remove()
 	end
     end
-
     local color
     if ESP.Highlighted == self.Object then
        color = ESP.HighlightColor
@@ -179,7 +178,7 @@ function boxBase:Update()
     if self.IsEnabled and (type(self.IsEnabled) == "string" and not ESP[self.IsEnabled] or type(self.IsEnabled) == "function" and not self:IsEnabled()) then
         allow = false
     end
-    if not workspace:IsAncestorOf(self.PrimaryPart) and not self.RenderInNil then
+    if not workspace:IsAncestorOf(self.PrimaryPart or self) and not self.RenderInNil then
         allow = false
     end
 
@@ -195,7 +194,7 @@ function boxBase:Update()
     end
 
     --calculations--
-    local cf = self.PrimaryPart.CFrame or self.CFrame
+    local cf = self.CFrame or self.PrimaryPart.CFrame
     if ESP.FaceCamera then
         cf = CFrame.new(cf.p, cam.CFrame.p)
     end
@@ -245,18 +244,16 @@ function boxBase:Update()
             self.Components.Distance.Font = ESP.Font
             self.Components.Distance.Position = Vector2.new(TagPos.X, TagPos.Y + 14)
             if ESP.Health then
-		    if not self.PrimaryPart.Parent == nil then
-			if self.PrimaryPart.Parent:FindFirstChildOfClass("Humanoid") then 
-			    self.Components.Distance.Text = "[".. math.floor((cam.CFrame.p - cf.p).magnitude).. "m]".. "[".. tostring(((1/self.PrimaryPart.Parent:FindFirstChildOfClass("Humanoid").MaxHealth) * self.PrimaryPart.Parent:FindFirstChildOfClass("Humanoid").Health) * 100).. "%]"
-			elseif self.PrimaryPart.Parent:FindFirstChild("Health") then 
-			    self.Components.Distance.Text = "[".. math.floor((cam.CFrame.p - cf.p).magnitude).. "m]".. "[".. tostring(math.round(self.PrimaryPart.Parent.Health.Value)).. "%]"
-			end
-		    else
-			self.Components.Distance.Text = "[".. math.floor((cam.CFrame.p - cf.p).magnitude).. "m]"
-		    end
-		else
-		    self.Components.Distance.Text = "[".. math.floor((cam.CFrame.p - cf.p).magnitude).. "m]"
-		end
+                if self.PrimaryPart.Parent:FindFirstChildOfClass("Humanoid") then 
+                    self.Components.Distance.Text = "[".. math.floor((cam.CFrame.p - cf.p).magnitude).. "m]".. "[".. tostring(((1/self.PrimaryPart.Parent:FindFirstChildOfClass("Humanoid").MaxHealth) * self.PrimaryPart.Parent:FindFirstChildOfClass("Humanoid").Health) * 100).. "%]"
+                elseif self.PrimaryPart.Parent:FindFirstChild("Health") then 
+                    self.Components.Distance.Text = "[".. math.floor((cam.CFrame.p - cf.p).magnitude).. "m]".. "[".. tostring(math.round(self.PrimaryPart.Parent.Health.Value)).. "%]"
+                else
+                    self.Components.Distance.Text = "[".. math.floor((cam.CFrame.p - cf.p).magnitude).. "m]"
+                end
+            else
+                self.Components.Distance.Text = "[".. math.floor((cam.CFrame.p - cf.p).magnitude).. "m]"
+            end
             self.Components.Distance.Color = Color3.fromRGB(255,255,255)
         else
             self.Components.Name.Visible = false
@@ -280,20 +277,6 @@ function boxBase:Update()
         end
     else
         self.Components.Tracer.Visible = false
-    end
-    
-    if game.PlaceId ~= 2317712696 then
-        for i,part in pairs(self.PrimaryPart.Parent:GetChildren()) do
-            if part:IsA("BasePart") and part ~= self.PrimaryPart then
-                local a = part:FindFirstChild("BoxHandleAdornment") or Instance.new("BoxHandleAdornment", part)
-                a.Adornee = part; a.AlwaysOnTop = true; a.ZIndex = 10; a.Size = part.Size; a.Color = BrickColor.new(color)
-                if (ESP.Chams and ESP.Enabled) then
-                    a.Transparency = 0.5 
-                else
-                    a.Transparency = 1
-                end
-            end
-        end
     end
 end
 
@@ -414,7 +397,7 @@ for i,v in pairs(plrs:GetPlayers()) do
     end
 end
 
-game:GetService("RunService").RenderStepped:Connect(function()
+game:GetService("RunService").Stepped:Connect(function()
     cam = workspace.CurrentCamera
     for i,v in (ESP.Enabled and pairs or ipairs)(ESP.Objects) do
         if v.Update then
@@ -423,6 +406,5 @@ game:GetService("RunService").RenderStepped:Connect(function()
         end
     end
 end)
-
 
 return ESP
