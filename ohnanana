@@ -9,6 +9,7 @@ local ESP = {
     Names = true,
     TeamColor = true,
     Thickness = 2,
+    MaxDistance = 15000,
     Font = 3,
     AttachShift = 1,
     TeamMates = true,
