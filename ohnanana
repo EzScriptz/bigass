@@ -150,7 +150,9 @@ function boxBase:Remove()
         self.Components[i] = nil
     end
 end
-
+local function round(n)
+            return math.floor(tonumber(n) + 0.5)
+        end
 function boxBase:Update()
     if not self.PrimaryPart then
     	if not self.Position then
@@ -244,8 +246,9 @@ function boxBase:Update()
             self.Components.Distance.Font = ESP.Font
             self.Components.Distance.Position = Vector2.new(TagPos.X, TagPos.Y + 14)
             if ESP.Health then
-                if self.PrimaryPart.Parent:FindFirstChildOfClass("Humanoid") then 
-                    self.Components.Distance.Text = "[".. math.floor((cam.CFrame.p - cf.p).magnitude).. "m]".. "[".. tostring(((1/self.PrimaryPart.Parent:FindFirstChildOfClass("Humanoid").MaxHealth) * self.PrimaryPart.Parent:FindFirstChildOfClass("Humanoid").Health) * 100).. "%]"
+                if self.PrimaryPart.Parent:FindFirstChildOfClass("Humanoid") then
+			
+                    self.Components.Distance.Text = "[".. math.floor((cam.CFrame.p - cf.p).magnitude).. "m]".. "[".. tostring(round(((1/self.PrimaryPart.Parent:FindFirstChildOfClass("Humanoid").MaxHealth) * self.PrimaryPart.Parent:FindFirstChildOfClass("Humanoid").Health) * 100)).. "%]"
                 elseif self.PrimaryPart.Parent:FindFirstChild("Health") then 
                     self.Components.Distance.Text = "[".. math.floor((cam.CFrame.p - cf.p).magnitude).. "m]".. "[".. tostring(math.round(self.PrimaryPart.Parent.Health.Value)).. "%]"
                 else
