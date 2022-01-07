@@ -254,8 +254,8 @@ function boxBase:Update()
             self.Components.Distance.Position = Vector2.new(TagPos.X, TagPos.Y + 14)
             if ESP.Health then
                 if self.PrimaryPart.Parent:FindFirstChildOfClass("Humanoid") then
-			
-                    self.Components.Distance.Text = "[".. math.floor((cam.CFrame.p - cf.p).magnitude).. "m]".. "[".. tostring(round(((1/self.PrimaryPart.Parent:FindFirstChildOfClass("Humanoid").MaxHealth) * self.PrimaryPart.Parent:FindFirstChildOfClass("Humanoid").Health) * 100)).. "%]"
+                    --self.Components.Distance.Text = "[".. math.floor((cam.CFrame.p - cf.p).magnitude).. "m]".. "[".. tostring(round(((1/self.PrimaryPart.Parent:FindFirstChildOfClass("Humanoid").MaxHealth) * self.PrimaryPart.Parent:FindFirstChildOfClass("Humanoid").Health) * 100)).. "%]"
+		    self.Components.Distance.Text = "[".. math.floor((cam.CFrame.p - cf.p).magnitude).. "m]".. "[".. tostring(round(self.PrimaryPart.Parent:FindFirstChildOfClass("Humanoid").Health)).. "/" ..tostring(round(self.PrimaryPart.Parent:FindFirstChildOfClass("Humanoid").MaxHealth)).. "]"
                 elseif self.PrimaryPart.Parent:FindFirstChild("Health") then 
                     self.Components.Distance.Text = "[".. math.floor((cam.CFrame.p - cf.p).magnitude).. "m]".. "[".. tostring(math.round(self.PrimaryPart.Parent.Health.Value)).. "%]"
                 else
