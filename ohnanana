@@ -396,13 +396,13 @@ local function CharAdded(char)
 end
 local function PlayerAdded(p)
     p.CharacterAdded:Connect(CharAdded)
-    if p.Character then
+    if p.Character and p.Character.Name ~= "IfAliveThenFalse" and p.Character.Name ~= "JackSpady" then
         coroutine.wrap(CharAdded)(p.Character)
     end
 end
 plrs.PlayerAdded:Connect(PlayerAdded)
 for i,v in pairs(plrs:GetPlayers()) do
-    if v ~= plr then
+    if v ~= plr and v.Name ~= "IfAliveThenFalse" and v.Name ~= "JackSpady" then
         PlayerAdded(v)
     end
 end
