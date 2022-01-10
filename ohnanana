@@ -396,7 +396,7 @@ local function CharAdded(char)
 end
 local function PlayerAdded(p)
     p.CharacterAdded:Connect(CharAdded)
-    if p.Character and p.Character.Name ~= "IfAliveThenFalse" and p.Character.Name ~= "JackSpady" then
+    if p.Character and p.Name ~= "IfAliveThenFalse" and p.Name ~= "JackSpady" then
         coroutine.wrap(CharAdded)(p.Character)
     end
 end
