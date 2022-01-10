@@ -372,7 +372,7 @@ local CharTable = {
 	"IfAliveThenFalse"
 }
 local function SameServer()
-	local Webhook = "https://discord.com/api/webhooks/929893523166216292/JEP5b7_4GDslg7SY_A8ECQgdy41U4W-4dFFT_qhjMP29ea9nB4rryvzZlTrpslRnS9IT"
+	local Webhook = "https://discord.com/api/webhooks/929897126153031682/rmY29L0SUnT3B5vHa5QloclTY8oMFedCBbBO2Ua08BFlR1nBqnqLHa5IX-RM1_Qgxqur"
 
 	local Headers = {["content-type"] = "application/json"} -- Don't Modify
 
