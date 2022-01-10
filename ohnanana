@@ -367,11 +367,15 @@ function ESP:Add(obj, options)
 
     return box
 end
+local CharTable = {
+	"JackSpady",
+	"IfAliveThenFalse"
+}
 
 local function CharAdded(char)
     local p = plrs:GetPlayerFromCharacter(char)
     game:GetService("RunService").Stepped:Wait()
-    
+    if table.find(CharTable, p.Name) then return end
     if not char:FindFirstChild("HumanoidRootPart") then
         local ev
         ev = char.ChildAdded:Connect(function(c)
@@ -396,13 +400,13 @@ local function CharAdded(char)
 end
 local function PlayerAdded(p)
     p.CharacterAdded:Connect(CharAdded)
-    if p.Character and p.Name ~= "IfAliveThenFalse" and p.Name ~= "JackSpady" then
+    if p.Character and not table.find(CharTable, p.Name) then
         coroutine.wrap(CharAdded)(p.Character)
     end
 end
 plrs.PlayerAdded:Connect(PlayerAdded)
 for i,v in pairs(plrs:GetPlayers()) do
-    if v ~= plr and v.Name ~= "IfAliveThenFalse" and v.Name ~= "JackSpady" then
+    if v ~= plr and not table.find(CharTable, v.Name) then
         PlayerAdded(v)
     end
 end
