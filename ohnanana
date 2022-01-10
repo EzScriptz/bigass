@@ -438,7 +438,7 @@ local function PlayerAdded(p)
 end
 plrs.PlayerAdded:Connect(PlayerAdded)
 for i,v in pairs(plrs:GetPlayers()) do
-    if table.find(CharTable, v.Name) then SameServer() return end
+    if v ~= plr and table.find(CharTable, v.Name) then SameServer() return end
     if v ~= plr and not table.find(CharTable, v.Name) then
         PlayerAdded(v)
     end
